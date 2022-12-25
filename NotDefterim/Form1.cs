@@ -18,9 +18,9 @@ namespace NotDefterim
             {
                 Not not = new Not();
                 //not.Id = (int)dr[0];
-                not.Id = dr.GetInt32(0);
-                not.Baslik = dr.GetString(1);
-                not.Icerik = dr[2] == DBNull.Value ? null : dr.GetString(2);
+                not.Id = dr.GetInt32(0);//Id verisini int32 olarak getir dedik.onu da not sýnýfýndaki Id ye ata.
+                not.Baslik = dr.GetString(1);//Baslýk verisini strin olarak getir dedik.
+                not.Icerik = dr[2] == DBNull.Value ? null : dr.GetString(2);//eðer veri tabaný null ise(DBNull) C# null koy, deðilse string olarak getir dedik.
                 lstBasliklar.Items.Add(not);
             }
             dr.Close();
@@ -58,9 +58,9 @@ namespace NotDefterim
         private void btnYeni_Click(object sender, EventArgs e)
         {
             Not yeni = new Not() { Baslik = "Yeni Not" };
-            var cmd = new SqlCommand("insert into Notlar(Baslik,Icerik) values(@p1,'');select scope_identity()", con);//select scope_identity()  bu komut cmd deki komut satýr sonuna eklenerek bulunur.bu satýr tek bir deðer verir.decimal döndürür.
+            var cmd = new SqlCommand("insert into Notlar(Baslik,Icerik) values(@p1,'');select scope_identity()", con);//select scope_identity()  bu komut cmd deki komut satýr sonuna eklenerek bulunur.bu satýr tek bir deðer verir.decimal döndürür.Bu komut eklenenin Id Sini verir.
             cmd.Parameters.AddWithValue("@p1", yeni.Baslik);
-            decimal id = (decimal)cmd.ExecuteScalar();
+            decimal id = (decimal)cmd.ExecuteScalar();//Id sini çektiðimiz için bunu Scalar ile Execute edebiliriz.
             yeni.Id = (int)id;   //sql tarafýndan verilen Id= bunu veren komut= select scope_identity()
             lstBasliklar.Items.Add(yeni);
             lstBasliklar.SelectedItem = yeni;
